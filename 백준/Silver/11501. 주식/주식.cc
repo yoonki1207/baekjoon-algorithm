@@ -26,7 +26,7 @@ int main() {
 			max_p = max(max_p, p);
 			if(max_p - p > 0) seed += max_p - p;
 		}
-		cout << seed << endl;
+		cout << seed << '\n';
 	}
 	return 0;
 }
