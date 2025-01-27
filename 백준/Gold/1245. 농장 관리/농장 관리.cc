@@ -1,88 +1,52 @@
 #include <iostream>
+#include <vector>
 #include <algorithm>
-#include <queue>
+#include <iomanip>
+#define FAST_IO ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
 
 using namespace std;
 
-int n, m, ans;
-int arr[102][72];
-int brr[102][72];
-int offset[8][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {1, -1}, {1, 0}, {1, 1}, {0, -1}, {0, 1}};
+int arr[101][71];
+int n, m;
+bool visited[101][71];
+int offset[8][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
 bool isTop(int y, int x) {
-    int h = arr[y][x];
-    for(int i = 0; i < 8; i++) {
-        int offsetY = y + offset[i][0];
-        int offsetX = x + offset[i][1];
-        if(arr[offsetY][offsetX] > h) {
-            return false;
-        }
-    }
-    return true;
-}
-
-void makeMountainAsH(int y, int x, int h) {
-    if(!isTop(y, x) || brr[y][x]) return;
-    int trr[102][72] = {0};
-    queue<pair<int, int>> q;
-    q.push({y, x});
-    trr[y][x] = 1;
-    while(!q.empty()) {
-        pair<int, int> coord = q.front();
-        q.pop();
-        for(int i = 0; i < 8; i++) {
-            int offsetY = coord.first + offset[i][0];
-            int offsetX = coord.second + offset[i][1];
-            // if(y == 1 && x == 2) {
-            //     printf("Info: [%d], [%d] > %d", offsetY, offsetX, arr[offsetY][offsetX]);
-            // }
-            if(arr[offsetY][offsetX] > h) {
-                // cout  << "ERROR from: " << y << ", " << x << " :" << offsetY << " " << offsetX << endl;
-                return;
-            }
-            if(arr[offsetY][offsetX] == h && trr[offsetY][offsetX] == 0) {
-                q.push({offsetY, offsetX});
-                trr[offsetY][offsetX] = 1;
-            }
-        }
-    }
-    // cout << "Do from " << y << " " << x << endl;
-    ans++;
-    for(int i = 1; i <= n; i++) {
-        for(int j = 1; j <= m; j++) {
-            if(trr[i][j]) brr[i][j] = 1;
-            // cout << trr[i][j] << ' ';
-        }
-        // cout << endl;
-    }
+	if(visited[y][x] == true) return true;
+	bool ret = false;
+	visited[y][x] = true;
+	for(int i = 0; i < 8; i++) {
+		int cy = y + offset[i][0];
+		int cx = x + offset[i][1];
+		if(cy < 1 || cx < 1 || cy > n || cx > m) continue;
+		if(arr[cy][cx] < arr[y][x]) ret = true;
+		if(arr[cy][cx] > arr[y][x]) { // 주변부가 더 높으면
+			visited[y][x] = false;
+			return false;
+		}
+		if(arr[cy][cx] == arr[y][x] && !isTop(cy, cx)) { // 결국 봉우리가 아니면
+			visited[y][x] = false;
+			return false;
+		}
+	}
+	return ret;
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);cout.tie(NULL);
-    cin >> n >> m;
-    for(int i = 1; i <= n; i++) {
-        for(int j = 1; j <=m; j++) {
-            cin >> arr[i][j];
-        }
-    }
-
-    for(int i = 1; i <= n; i++) {
-        for(int j = 1; j <= m; j++) {
-            makeMountainAsH(i, j, arr[i][j]);
-        }
-    }
-    bool isSameAll = true;
-    for(int i = 1; i <= n; i++) {
-        for(int j = 1; j <= m; j++) {
-            if(arr[i][j] != arr[1][1]) {
-                isSameAll = false;
-                break;
-            }
-        }
-    }
-    if(isSameAll) cout << 0;
-    else cout << ans;
-    
-    return 0;
+	FAST_IO
+	cin >> n >> m;
+	for(int i = 1; i <= n; i++) {
+		for(int j = 1; j <= m; j++) {
+			cin >> arr[i][j];
+		}
+	}
+	int ans = 0;
+	for(int i = 1; i <= n; i++) {
+		for(int j = 1; j <= m; j++) {
+			if(visited[i][j] == false)
+				ans += isTop(i, j);
+		}
+	}
+	cout << ans << endl;
+	return 0;
 }
