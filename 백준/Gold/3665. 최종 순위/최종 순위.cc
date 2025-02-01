@@ -51,6 +51,7 @@ int main(int argc, char** argv)
 			}
 		}
 		vector<int> ans;
+		ans.reserve(n);
 		while(!q.empty()) {
 			int t = q.front();
 			q.pop();
