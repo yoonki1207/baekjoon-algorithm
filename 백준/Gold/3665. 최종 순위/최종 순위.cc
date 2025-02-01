@@ -2,17 +2,17 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <queue>
 
 using namespace std;
 
-int main(int argc, char** argv)
+int main()
 {
 	ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
-	int test_case;
 	int T;
 	cin >> T;
-	for(test_case = 1; test_case <= T; ++test_case)
+	for(int test_case = 1; test_case <= T; ++test_case)
 	{
 		int n;
 		int arr[501][501]={0};
@@ -39,38 +39,26 @@ int main(int argc, char** argv)
 			prr[a] += arr[a][b] == 0 ? 1 : -1;
 			prr[b] += arr[b][a] == 0 ? 1 : -1;
 		}
-
-		bool isPossible = false;
+		vector<pair<int, int>> vp;
+		vp.reserve(n);
 		for(int i = 1; i <= n; i++) {
-			if(prr[i] == 0) {
-				isPossible = true;
-				q.push(i);
-				break;
+			vp.push_back({prr[i], i});	
+		}
+
+		sort(vp.begin(), vp.end());
+		bool isPossible = vp[0].first == 0;
+		for(int i = 0; i < vp.size()-1 && isPossible; i++) {
+			if(vp[i].first >= vp[i+1].first) {
+				isPossible = false;
 			}
 		}
-		vector<int> ans;
-		ans.reserve(n);
-		while(!q.empty()) {
-			int t = q.front();
-			q.pop();
-			for(int i = 1; i <= n; i++) {
-				if(arr[t][i] == 1) {
-					arr[t][i] = 0;
-					prr[i]--;
-					if(prr[i] == 0) q.push(i);
-				}
-			}
-			ans.push_back(t);
-		}
-		if(ans.size() != n) isPossible = false;
 
 		if(!isPossible) {
 			cout << "IMPOSSIBLE\n";
-			continue;
 		} else {
-			for(int i = 0; i < n; i++) cout << ans[i] << ' ';
+			for(int i = 0; i < n; i++) cout << vp[i].second << ' ';
 			cout << '\n';
 		}
 	}
-	return 0;//정상종료시 반드시 0을 리턴해야합니다.
+	return 0;
 }
