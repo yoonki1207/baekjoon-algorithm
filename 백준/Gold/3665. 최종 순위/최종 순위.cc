@@ -16,10 +16,12 @@ int main(int argc, char** argv)
 	{
 		int n;
 		int arr[501][501]={0};
+		int prr[501] = {0};
 		cin >> n;
 		vector<int> v(n);
 		for(int i = 0; i < n; i++) {
 			cin >> v[i];
+			prr[v[i]] = i;
 		}
 		for(int i = 0; i < n; i++) {
 			for(int j = i+1; j < n; j++) {
@@ -34,12 +36,8 @@ int main(int argc, char** argv)
 			int a, b;
 			cin >> a >> b;
 			swap(arr[a][b], arr[b][a]);
-		}
-		int prr[501] = {0};
-		for(int i = 1; i <= n; i++) {
-			for(int j = 1; j <= n; j++) {
-				if(arr[i][j] == 1) prr[j]++;
-			}
+			prr[a] += arr[a][b] == 0 ? 1 : -1;
+			prr[b] += arr[b][a] == 0 ? 1 : -1;
 		}
 
 		bool isPossible = false;
