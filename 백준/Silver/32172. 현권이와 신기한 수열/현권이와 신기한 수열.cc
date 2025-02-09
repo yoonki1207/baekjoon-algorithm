@@ -4,33 +4,26 @@
 #include <string>
 #include <vector>
 #include <queue>
-#include <unordered_map>
 #define INF 987654321
 
 using namespace std;
 
-int arr[100001];
-unordered_map<int, bool> umap;
-
-bool isPresent(int x) {
-    return umap.find(x) != umap.end();
-}
+bool cache[600000];
 
 int main() {
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
     int n = 100000;
     cin >> n;
-    arr[0] = 0;
-    umap.insert({0, true});
-    unordered_map<int, bool>::iterator iter = umap.find(1);
-
+    int a = 0;
+    cache[0] = 1;
     for(int i = 1; i <= n; i++) {
-        arr[i] = arr[i-1] - i;
-        if(isPresent(arr[i]) || arr[i] < 0) {
-            arr[i] = arr[i-1] + i;
+        if(a - i < 0 || cache[a-i]) {
+            a = a + i;
+        } else {
+            a = a - i;
         }
-        umap.insert({arr[i], true});
+        cache[a] = 1;
     }
-    cout << arr[n] << endl;
+    cout << a << endl;
     return 0;
 }
