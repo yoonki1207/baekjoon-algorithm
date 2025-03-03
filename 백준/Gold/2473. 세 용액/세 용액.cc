@@ -12,7 +12,7 @@ using namespace std;
 lld n;
 vector<lld> v;
 vector<lld> ans;
-lld max_diff;
+lld min_diff;
 
 lld real_index(lld a, lld b, lld index) {
 	if(index >= a) index++;
@@ -53,20 +53,27 @@ int main()
 	cin >> n;
 	v = vector<lld>(n);
 	ans = vector<lld>(3);
-	max_diff = __LONG_LONG_MAX__;
+	min_diff = __LONG_LONG_MAX__;
 	for(int i = 0; i < n; i++) cin >> v[i];
 	sort(v.begin(), v.end());
 
 	for(int i = 0; i < n; i++) {
-		for(int j = i+1; j < n; j++) {
-			lld c = find_c(i, j);
-			lld diff = abs((lld)v[i] + (lld)v[j] + (lld)c);
-			
-			if(diff < max_diff) {
-				max_diff = diff;
+		int start = i+1, end = n-1;
+		while(start < end) {
+			lld sum = v[start] + v[end] + v[i];
+			lld diff = abs(sum);
+			if(diff < min_diff) {
+				min_diff = diff;
 				ans[0] = v[i];
-				ans[1] = v[j];
-				ans[2] = c;
+				ans[1] = v[start];
+				ans[2] = v[end];
+			}
+			if(sum > 0) {
+				end--;
+			} else if(sum < 0) {
+				start++;
+			} else {
+				break;
 			}
 		}
 	}
@@ -80,4 +87,5 @@ int main()
 3
 100 100 100
 0 100 100
+-6 6 7
  */
