@@ -48,14 +48,14 @@ lld solve(int start, int end) {
 
 	lld area = 0;
 	if(start == left) {
-		while(right <= end) {
+		while(right < end) {
 			right++;
 			height = min(height, v[right]);
 			area = (right-left+1) * height;
 			mid_area = max(mid_area, area);
 		}
 	} else {
-		while(left >= start) {
+		while(left > start) {
 			left--;
 			height = min(height, v[left]);
 			area = (right-left+1) * height;
