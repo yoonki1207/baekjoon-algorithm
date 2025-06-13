@@ -16,45 +16,87 @@ using namespace std;
 
 int n;
 vector<int> hexan;
+vector<int> dp;
+set<int> sets;
 int ans = 7;
 // int max_i;
 
 void init() {
 	hexan.push_back(0);
 	hexan.push_back(1);
+	sets.insert(1);
 	// hexan.push_back(6);
 	for(int i = 2; true; i++) {
 		int k = i * 4 - 3 + hexan.back();
+		if(k>n) break;
 		hexan.push_back(k);
-		if(k>1000000) break;
+		sets.insert(k);
 	}
 	// cout << hexan.size() << endl;
-}
-
-int dfs(int x, int target, int depth) {
-	// cout << x << endl;
-	int ret = INF;
-	if(depth >= ans || (target > 130 && depth > 4) || (target > 146858 && depth > 3) || (target > 26 && depth > 5) || depth > 6 || x > target) return ret;
-	if(x == target) {
-		ans = depth;
-		return depth;
-	}
-	vector<int>::iterator iter = lower_bound(hexan.begin(), hexan.end(), target-x);
-	int max_i = (int)(iter - hexan.begin());
-	for(int i = max_i; i >= 0; i--) {
-		if(x+hexan[i] > target || depth+1 >= ans) continue;
-		int res = dfs(x + hexan[i], target, depth+1);
-		ret = min(ret, res);
-	}
-	return ret;
 }
 
 int main()
 {
 	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-	init();
 	cin >> n;
-	// cout << *iter << " " << (int)(iter - hexan.begin())<< endl;
-	cout << dfs(0, n, 0);
+	init();
+	dp = vector<int>(n+1, 7);
+	for(int i = 1; i < hexan.size(); i++) {
+		dp[hexan[i]] = 1;
+	}
+	// for(int i = 1; i < 30; i++) {
+	// 	cout << dp[i] << ' ';
+	// }
+	// for(int i = 0; i < hexan.size(); i++) {
+	// 	cout << hexan[i] << ' ';
+	// }
+	if(n == 11 || n == 26) {
+		cout << 6;
+		return 0;
+	}
+	if(n <= 130) {
+		int ans = 0;
+		for(int d = 1; d <= n; d++) {
+			for(int i = 1; i < hexan.size(); i++) {
+				int x = hexan[i];
+				int t = d + x;
+				if(t>n) break;
+				ans = min(dp[t], dp[d] + 1);
+				if(t >= 27 && ans > 5) {
+					break;
+				}
+				dp[t] = ans;
+			}
+		}
+		cout << dp[n];
+	} else {
+		if(sets.find(n) != sets.end()) {
+			cout << 1;
+			return 0;
+		}
+		for(int i = 1; i < hexan.size(); i++) {
+			int x = hexan[i];
+			if(n-x <= 1) continue;
+			if(sets.find(n-x) != sets.end()) {
+				cout << 2;	
+				return 0;
+			}
+		}
+		for(int i = 1; i < hexan.size(); i++) {
+			int a = hexan[i];
+			for(int j = 1; j < hexan.size(); j++) {
+				int b = hexan[j];
+				int t = n - a - b;
+				if(t<=0) continue;
+				if(sets.find(t) != sets.end()) {
+					cout << 3;
+					return 0;
+				}
+			}
+		}
+		cout << 4;
+	}
+
+	
 	return 0;
 }
