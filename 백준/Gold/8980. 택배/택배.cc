@@ -35,7 +35,7 @@ int main() {
 
 	sort(v.begin(), v.end());
 
-	int truck_size[101] = {0};
+	int truck_size[2001] = {0};
 	int ans = 0;
 
 	for(int i = 0; i < v.size(); i++) {
