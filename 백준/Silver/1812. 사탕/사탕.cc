@@ -24,7 +24,7 @@ int main() {
             // cout << j << ' ';
         }
         // cout << endl;
-        cout << s-x<<endl;
+        cout << s-x<<'\n';
     }
     return 0;
 }
