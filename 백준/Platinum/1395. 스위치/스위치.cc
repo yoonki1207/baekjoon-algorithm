@@ -17,7 +17,7 @@ int N, M;
 int tree[MAX_N*4];
 int lazy[MAX_N*4];
 
-void updateLazy(int start, int end, int n) {
+inline void updateLazy(int start, int end, int n) {
 	if(lazy[n] % 2 == 1) {
 		tree[n] = (end - start + 1) - tree[n]; // update
 		if(start != end) {
