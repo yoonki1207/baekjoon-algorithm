@@ -13,7 +13,7 @@
 
 using namespace std;
 
-// 백준 3197
+// 백준 17225
 
 int A, B, N;
 
@@ -23,26 +23,27 @@ int main() {
 	int t, m;
 	char color;
 	int pa = 0, pb = 0;
-	vector<pair<int, bool>> v; // false: sangmin
+	vector<pair<int, int>> v; // false: sangmin
 	for (int i = 0; i < N; i++) {
 		cin >> t >> color >> m;
 		if (color == 'B' && t < pa) t = pa;
 		if (color == 'R' && t < pb) t = pb;
 		for (int j = 0; j < m; j++) {
 			// t, color
-			v.push_back({ t, color == 'R' });
+			v.push_back({ t, color == 'R'? 1 : 0 });
 			t += (color == 'B') ? A : B;
 		}
 		if (color == 'B') {
-			pa = t - A;
+			pa = t;
 		}
 		if (color == 'R') {
-			pa = t - B;
+			pb = t;
 		}
 	}
+
 	sort(v.begin(), v.end());
 	vector<int> sangmin, jisu;
-	for (vector<pair<int, bool>>::iterator iter = v.begin(); iter != v.end(); iter++) {
+	for (vector<pair<int, int>>::iterator iter = v.begin(); iter != v.end(); iter++) {
 		if (iter->second == 0) {
 			sangmin.push_back((iter - v.begin()) + 1);
 		}
@@ -60,4 +61,3 @@ int main() {
 	}cout << '\n';
 	return 0;
 }
-
