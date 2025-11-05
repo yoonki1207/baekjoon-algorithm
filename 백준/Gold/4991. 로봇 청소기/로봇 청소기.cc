@@ -74,6 +74,18 @@ void solve(int index, vector<bool> visited, int cost, int d) {
 	}
 }
 
+void solve() {
+	vector<int> v(coords.size() - 1);
+	for (int i = 1; i < coords.size(); i++) v[i-1] = i;
+	do {
+		int cost = matrix[0][v[0]];
+		for (int i = 0; i < v.size()-1; i++) {
+			cost += matrix[v[i]][v[i + 1]];
+		}
+		ans = min(ans, cost);
+	} while (next_permutation(v.begin(), v.end()));
+}
+
 
 int main() {
 	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
@@ -109,7 +121,8 @@ int main() {
 
 		if (solveable) {
 			vector<bool> visited(coords.size());
-			solve(0, visited, 0, 0);
+			//solve(0, visited, 0, 0);
+			solve();
 		}
 
 
