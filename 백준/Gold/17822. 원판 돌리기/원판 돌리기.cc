@@ -24,7 +24,7 @@ const int r[4][2] = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}}; // UP DOWN RIGHT LEFT
 int N, M, T;
 int arr[51][51];
 
-vector<pii> nearCoords(const int y, const int x) {
+inline vector<pii> nearCoords(const int y, const int x) {
     vector<pii> ret;
     for(int i = 0; i < 4; i++) {
         int ny = y + r[i][0];
