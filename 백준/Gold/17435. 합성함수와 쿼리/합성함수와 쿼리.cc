@@ -35,11 +35,7 @@ void init() {
     }
     for(int i = 1; i < MAX_LOG; i++) {
         for(int x = 1; x <= N; x++) {
-            int k = x;
-            for(int j = i-1; j >= 0; j--) {
-                k = dp[j][k];
-            }
-            dp[i][x] = dp[0][k];
+            dp[i][x] = dp[i-1][dp[i-1][x]];
         }
     }
 }
