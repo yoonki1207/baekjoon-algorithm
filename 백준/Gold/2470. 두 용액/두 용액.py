@@ -54,14 +54,6 @@ diff = abs(9234567890)
 for i in range(len(line)):
     # key
     index = binary_search(line, i + 1, len(line) - 1, line[i])
-    if i < index < len(line):
-        update(line[i], line[index])
-    if index - 1 > i:
-        update(line[i], line[index - 1])
-        pass
-    elif i < index + 1 < len(line):
-        update(line[i], line[index + 1])
-        pass
     pass
 
 if ans[0] > ans[1]: ans[0], ans[1] = ans[1], ans[0]
