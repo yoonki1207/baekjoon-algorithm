@@ -23,26 +23,25 @@ values = [-1] * (N + 1)
 
 from collections import deque
 
+visited = [False] * (N + 1)
 for start_node in range(1, N + 1): # 실외 degree 계산
-    if color[start_node] == 1: continue
-    visited = [False] * (N + 1)
+    if color[start_node] == 1: continue # 실외만 탐색
     passed_outdoor = []
     indoor_cnt = 0
     q = deque([start_node])
-    visited[start_node] = True
+    visited[start_node] = True 
 
     if values[start_node] != -1: continue
     while q:
         curr = q.popleft()
-        if color[curr] == 1:
-            indoor_cnt += 1
-            continue
-        else:
-            passed_outdoor.append(curr)
+        passed_outdoor.append(curr)
         for next in graph[curr]:
             if visited[next]: continue
-            visited[next] = True
-            q.append(next)
+            if color[next] == 0:
+                visited[next] = True
+                q.append(next)
+            else:
+                indoor_cnt += 1
     for outdoor_node in passed_outdoor:
         values[outdoor_node] = indoor_cnt
 
