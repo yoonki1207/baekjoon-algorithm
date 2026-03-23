@@ -45,7 +45,7 @@ int main() { ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
     }
 
     for(int node = 1; node <= N; node++) {
-        if(!isIndoor[node]) {
+        if(!isIndoor[node] && !visited[node]) {
             // bfs
             int indoorCnt = 0;
             queue<int> q;
