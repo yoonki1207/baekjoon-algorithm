@@ -71,7 +71,7 @@ int main() { ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
             }
         }
     }
-    int cnt = 0;
+    long long cnt = 0;
     for(int node = 1; node <= N; node++) {
         if(isIndoor[node]) {
             for(vector<int>::iterator iter = adj[node].begin(); iter != adj[node].end(); iter++) {
